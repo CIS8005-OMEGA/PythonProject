@@ -1,0 +1,84 @@
+
+# coding: utf-8
+
+# In[2]:
+
+import pandas as pd
+ign = pd.read_excel("/Users/himansh/Documents/GSU/Spring/CIS8005/Project/dataset/gamedata.xlsx")
+ign.head()
+
+
+# In[3]:
+
+df_vg = pd.read_csv('/Users/himansh/Documents/GSU/Spring/CIS8005/Project/dataset/Video_Games.csv', delimiter=',')
+df_vg.head()
+
+
+# In[10]:
+
+
+
+
+# In[9]:
+
+
+
+
+# In[ ]:
+
+ign_rating = []
+for game in df_vg['Name']:
+    matches = ign[ign['Game'] == game]
+    if matches.shape[0] > 0:
+        ign_rating.append(matches['Score'].iloc[0])
+    else:
+        ign_rating.append(0)
+print(ign_rating[0:10])
+
+
+# In[12]:
+
+df_vg.head()
+
+
+# In[13]:
+
+print(ign_rating[0:10])
+
+
+# In[14]:
+
+import numpy as np
+df_vg['IGN'] = ign_rating
+df_vg['IGN'] = df_vg['IGN'].replace(0, np.NaN)
+
+
+# In[15]:
+
+rating_columns = ['IGN', 'User_Score', 'Critic_Score']
+df_vg[pd.isnull(df_vg['User_Score'])].head()
+
+
+# In[16]:
+
+cleaned_df_vg = df_vg
+for col in rating_columns:
+    cleaned_df_vg = cleaned_df_vg[pd.notnull(cleaned_df_vg[col])]
+cleaned_df_vg.head()
+
+
+# In[17]:
+
+cleaned_df_vg.describe()
+
+
+# In[19]:
+
+cleaned_df_vg = cleaned_df_vg.reset_index()
+cleaned_df_vg.to_csv("/Users/himansh/Documents/GSU/Spring/CIS8005/Project/dataset/cleaned_game.csv")
+
+
+# In[ ]:
+
+
+
