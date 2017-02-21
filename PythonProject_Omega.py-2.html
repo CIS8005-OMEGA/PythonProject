@@ -1,0 +1,415 @@
+
+# coding: utf-8
+
+# In[2]:
+
+import numpy as np
+arr = np.random.randn(5, 4)
+arr
+
+
+# In[3]:
+
+arr.mean()
+
+
+# In[5]:
+
+from numpy import genfromtxt
+my_data = genfromtxt('/Users/himansh/Documents/GSU/Spring/CIS8005/Project/dataset/GlobalLandTemperaturesByCountry.csv', delimiter=',')
+
+
+# In[6]:
+
+my_data
+
+
+# In[7]:
+
+import csv
+f = open('/Users/himansh/Documents/GSU/Spring/CIS8005/Project/dataset/GlobalLandTemperaturesByCountry.csv')
+csv_f = csv.reader(f)
+
+
+# In[ ]:
+
+for row in csv_f:
+  print row
+
+
+# In[9]:
+
+import pandas as pd
+df = pd.read_csv('/Users/himansh/Documents/GSU/Spring/CIS8005/Project/dataset/GlobalLandTemperaturesByCountry.csv', delimiter=',')
+
+
+# In[10]:
+
+df
+
+
+# In[11]:
+
+df.mean(axis=1, skipna=False)
+
+
+# In[12]:
+
+df.sum(axis=1)
+
+
+# In[13]:
+
+df.sum()
+
+
+# In[14]:
+
+df.mean()
+
+
+# In[15]:
+
+df[0]
+
+
+# In[16]:
+
+df[1]
+
+
+# In[21]:
+
+df["AverageTemperature"]
+
+
+# In[22]:
+
+x = df["AverageTemperature"]
+print x
+
+
+# In[23]:
+
+import matplotlib.pyplot as plt
+y = df["dt"]
+x = df["AverageTemperature"]
+plt.plot(x,y,marker='o')
+plt.xlabel('Years')
+plt.ylabel('Average Temperature')
+plt.title('Temperature Data for the United States (2000-2012)')
+plt.show()
+
+
+# In[26]:
+
+df.plot(x="dt", y="AverageTemperature")
+
+
+# In[27]:
+
+import matplotlib.pyplot as plt
+plt.plot([1,2,3,4])
+plt.ylabel('some numbers')
+plt.show()
+
+
+# In[29]:
+
+df2 = pd.DataFrame(np.random.rand(10, 5), columns=['A', 'B', 'C', 'D', 'E'])
+df2.plot.box()
+
+
+# In[31]:
+
+df.plot(x='A', y='B')
+
+
+# In[39]:
+
+import matplotlib.pyplot as plt
+plt.plot(df["dt"])
+plt.ylabel('some numbers')
+plt.show()
+
+
+# In[40]:
+
+df["dt"]
+
+
+# In[41]:
+
+df["AverageTemperature"]
+
+
+# In[43]:
+
+import matplotlib.pyplot as plt
+plt.plot([1,2,3,4])
+plt.ylabel('some numbers')
+plt.show()
+
+
+# In[59]:
+
+import matplotlib.pyplot as plt
+plt.plot(df["AverageTemperature"][1:10])
+plt.plot(df["AverageTemperature"][11:20])
+plt.xlabel(df["dt"][1:10])
+plt.ylabel(df["Country"][1:10])
+plt.show()
+
+
+# In[47]:
+
+df
+
+
+# In[48]:
+
+df["AverageTemperature"]
+
+
+# In[50]:
+
+df["AverageTemperature"][1:10]
+
+
+# In[125]:
+
+values = df["AverageTemperature"][1:14]
+widths = [0.5]
+colors = ['g']
+
+# current figure, dont worry about this
+fig, ax = plt.subplots()
+
+plt.bar(range(13), values, width=widths, 
+        color=colors, align='center')
+
+plt.xticks(range(13), (df["dt"][1:14]))
+
+ax.set_ylabel('Temperature')
+
+plt.title('Temperature')
+
+plt.show()
+
+
+# In[69]:
+
+df_vg = pd.read_csv('/Users/himansh/Documents/GSU/Spring/CIS8005/Project/dataset/Video_Games.csv', delimiter=',')
+
+
+# In[70]:
+
+df_vg
+
+
+# In[71]:
+
+df.value_counts()
+
+
+# In[92]:
+
+len(df.index)
+
+
+# In[118]:
+
+df_vg
+
+
+# In[124]:
+
+values = df_vg["Global_Sales"][1:11]
+widths = [0.5]
+colors = ['g']
+
+# current figure, dont worry about this
+fig, ax = plt.subplots()
+plt.bar(range(l1), values, width=widths, 
+        color=colors, align='center')
+plt.xticks(range(11), (df_vg["Platform"])[1:11])
+ax.set_ylabel('Sales')
+plt.title('Sales')
+plt.show()
+
+
+# In[149]:
+
+values = df_vg["Global_Sales"]
+widths = [0.5]
+colors = ['g']
+
+# current figure, dont worry about this
+fig, ax = plt.subplots()
+
+plt.bar(range(len(df_vg.index)), values, width=widths, 
+        color=colors, align='center')
+
+plt.xticks(range(len(df_vg.index)), (df_vg["Platform"]))
+
+ax.set_ylabel('Platform')
+
+plt.title('Global Sales')
+
+plt.show()
+
+
+# In[156]:
+
+
+a = df_vg.groupby(['Name']).sum('Global_Sales')
+print(a)
+
+
+# In[ ]:
+
+
+
+
+# In[157]:
+
+df_vg.groupby(['Name']).groups.keys()
+
+
+# In[224]:
+
+result = pd.DataFrame(df_vg.groupby(['Name'], as_index = False).agg({'Global_Sales':sum}).sort('Global_Sales', ascending=False))
+result
+result.get_group('Name')
+
+
+# In[183]:
+
+df_vg
+
+
+# In[225]:
+
+df_gv
+
+
+# In[226]:
+
+df_vg
+
+
+# In[ ]:
+
+
+
+
+# In[228]:
+
+f,ax=plt.subplots(1,1,figsize=(12,5))
+df_vg.groupby("Publisher")["Global_Sales"].sum().sort_values(ascending=False)[:10].plot(kind="bar")
+ax.set_ylabel("revenue")
+ticks=plt.setp(ax.get_xticklabels(), rotation=20, fontsize=7)
+
+
+# In[233]:
+
+sales_by_platform = df_vg %>% 
+
+
+# In[234]:
+
+result = pd.DataFrame(df_vg.groupby(['Name'], as_index = False).agg({'Global_Sales':sum}).sort('Global_Sales', ascending=False))
+result
+
+
+# In[3]:
+
+result = pd.DataFrame(df_vg.groupby(['Name'], as_index = False).agg({'Global_Sales':sum}).sort('Global_Sales', ascending=False))
+result
+
+
+# In[ ]:
+
+
+
+
+# In[5]:
+
+import pandas as pd
+df_vg = pd.read_csv('/Users/himansh/Documents/GSU/Spring/CIS8005/Project/dataset/Video_Games.csv', delimiter=',')
+
+
+# In[6]:
+
+df_vg
+
+
+# In[8]:
+
+get_ipython().magic(u'matplotlib inline')
+from matplotlib.pyplot import hist
+s = df_vg.groupby(['Genre','Year_of_Release']).agg(sum)['NA_Sales']
+del s['Adventure']
+del s['Strategy']
+del s['Simulation']
+del s['Fighting']
+del s['Racing']
+del s['Misc']
+ax = s.unstack('Genre').plot(kind = "line",figsize=(10,8),title="North America Video Games Sales by Genre Per Year")
+ax.set(xlabel="Years", ylabel="Net Sales")
+
+
+# In[13]:
+
+import pandas as pd
+get_ipython().magic(u'matplotlib inline')
+from matplotlib.pyplot import hist
+df_vg.groupby('Genre').count.plot.bar()
+
+
+# In[15]:
+
+s = df_vg.groupby('Year_of_Release').ids.agg(lambda x:len(x.unique()))
+pd.value_counts(s).plot(kind="bar")
+
+
+# In[17]:
+
+s = df_vg.groupby("Year_of_Release").agg(Series.nunique)
+pd.value_counts(s).plot(kind="bar")
+
+
+# In[19]:
+
+import matplotlib.pyplot as plt
+f,ax=plt.subplots(1,1,figsize=(4,4))
+df_vg.groupby("Publisher")["Global_Sales"].sum().sort_values(ascending=False)[:10].plot.pie()
+ax.set_ylabel("")
+plt.tight_layout()
+
+
+# In[20]:
+
+f,ax=plt.subplots(1,1,figsize=(12,5))
+df_vg.groupby("Publisher")["Global_Sales"].sum().sort_values(ascending=False)[:10].plot(kind="bar")
+ax.set_ylabel("revenue")
+ticks=plt.setp(ax.get_xticklabels(), rotation=20, fontsize=7)
+
+
+# In[24]:
+
+import sqlite3
+import pandas as pd
+import pandas as pd
+get_ipython().magic(u'matplotlib inline')
+from matplotlib.pyplot import hist
+conn = sqlite3.connect('/Users/himansh/Documents/workspace/PythonProject/python_project.sqlite')
+
+df = pd.read_sql_query("SELECT * FROM videogames", conn)
+print(df["Platform"])
+
+
+# In[ ]:
+
+
+
